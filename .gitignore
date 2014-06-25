@@ -1,6 +1,4 @@
-
-<!-- saved from url=(0081)https://raw.githubusercontent.com/pahimar/Equivalent-Exchange-3/master/.gitignore -->
-<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"></head><body><pre style="word-wrap: break-word; white-space: pre-wrap;">## gradle
+## gradle
 /.gradle
 /build
 /gradle
@@ -17,12 +15,3 @@
 /.classpath
 /.project
 /bin
-
-## intellij
-/out
-/.idea
-/*.iml
-/*.ipr
-/*.iws
-/atlassian-ide-plugin.xml
-</pre></body></html>

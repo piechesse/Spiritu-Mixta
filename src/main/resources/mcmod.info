@@ -1,0 +1,17 @@
+[
+{
+  "modid": "spiritumixta",
+  "name": "Spiritu Mixta",
+  "description": "Mod full of soul magic and manipulation.",
+  "version": "1.0",
+  "mcversion": "1.7.2",
+  "logoFile": "",
+  "url": "",
+  "updateUrl": "",
+  "authorList": ["Piechesse"],
+  "credits": "",
+  "parent": "",
+  "screenshots": [],
+  "dependencies": []
+}
+]
