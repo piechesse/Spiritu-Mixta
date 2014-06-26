@@ -1,5 +1,9 @@
 package com.piechesse.spiritumixta;
 
+import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.init.Items;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.Instance;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
@@ -12,11 +16,27 @@ import cpw.mods.fml.common.eventhandler.SubscribeEvent;
  */
 @Mod(modid = "spiritumixta", version = "1.7.2-1.0", name = "Spiritu Mixta")
 public class SpirituMixta {
+	
+	 public static CreativeTabs tabBloodMagic = new CreativeTabs("tabSpirituMixta")
+	    {
+	    	@Override
+	        public ItemStack getIconItemStack()
+	        {
+	            return new ItemStack(Items.arrow, 1, 0);
+	        }
+
+			@Override
+			public Item getTabIconItem() 
+			{
+				return Items.arrow;
+			}
+	    };
+	
 	@Instance("spiritumixta")
 	public static SpirituMixta spirituMixta;
+
 	@SubscribeEvent
 	public void preInitialization(FMLPreInitializationEvent event) {
-
 	}
 
 	@SubscribeEvent
