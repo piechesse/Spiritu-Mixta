@@ -8,6 +8,7 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.ItemSword;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.IIcon;
@@ -23,6 +24,7 @@ public class SwordSacrifice extends SMItem {
 
 	public SwordSacrifice() {
 		super("swordSacrifice");
+		
 		setUnlocalizedName("swordSacrifice");
 		setMaxStackSize(1);
 		setFull3D();
@@ -34,6 +36,7 @@ public class SwordSacrifice extends SMItem {
 	private IIcon[] spirit;
 
 	private final int[] MAX_POWER = new int[] { 1000, 10000, 100000, 1000000 };
+	private final float[] DAMAGE = new float[] {2f,4f,8f,12f};
 
 	public void onCreated(ItemStack itemStack, World world, EntityPlayer player) {
 		if (itemStack.stackTagCompound == null)
@@ -56,8 +59,10 @@ public class SwordSacrifice extends SMItem {
 
 	}
 
-	public ItemStack onItemRightClick(ItemStack itemStack, World world,
-			EntityPlayer player) {
+	public ItemStack onItemRightClick(ItemStack itemStack, World world, EntityPlayer player) {
+		if (player.worldObj.isRemote) {
+			return itemStack;
+		}
 		if (itemStack.stackTagCompound == null) {
 			itemStack.setTagCompound(new NBTTagCompound());
 			NBTTagCompound tag = itemStack.stackTagCompound;
@@ -67,31 +72,22 @@ public class SwordSacrifice extends SMItem {
 		}
 		NBTTagCompound tag = itemStack.stackTagCompound;
 		if (player.isSneaking()) {
-			if (!tag.getBoolean("activated"))
-				tag.setBoolean("activated", true);
-			else
-				tag.setBoolean("activated", false);
+				tag.setBoolean("activated", !tag.getBoolean("activated"));
 		}
-		if (tag.getInteger("power") < MAX_POWER[tag.getInteger("tier")]) {
-			tag.setInteger("power", tag.getInteger("power") + 20);
-		} else {
-			tag.setInteger("power", MAX_POWER[tag.getInteger("tier")]);
-		}
-		if (player.worldObj.isRemote) {
-			return itemStack;
-		}
+		
 		return itemStack;
 	}
 
 	@Override
-	public boolean hitEntity(ItemStack itemStack, EntityLivingBase entity1,
-			EntityLivingBase entity2) {
-		entity1.setHealth(-1);
+	public boolean hitEntity(ItemStack itemStack, EntityLivingBase entity1, EntityLivingBase entity2) {
 		if (itemStack.stackTagCompound == null) {
 			itemStack.stackTagCompound = new NBTTagCompound();
 		}
-		itemStack.stackTagCompound.setInteger("power",
-				itemStack.stackTagCompound.getInteger("power") + 100);
+		float health = entity1.getHealth();
+		float damage = DAMAGE[itemStack.stackTagCompound.getInteger("tier")];
+		entity1.setHealth(entity1.getHealth() - damage);
+		
+		itemStack.stackTagCompound.setInteger("power", itemStack.stackTagCompound.getInteger("power") + 100);
 
 		return true;
 	}
@@ -106,8 +102,7 @@ public class SwordSacrifice extends SMItem {
 				if (player.getAbsorptionAmount() > 20f) {
 					player.setAbsorptionAmount(player.getAbsorptionAmount() - 20f);
 				} else {
-					player.setHealth(player.getHealth()
-							- (20f - player.getAbsorptionAmount()));
+					player.setHealth(player.getHealth() - (20f - player.getAbsorptionAmount()));
 					player.setAbsorptionAmount(0f);
 				}
 			}
@@ -115,19 +110,15 @@ public class SwordSacrifice extends SMItem {
 			if (player.getHealth() < 0.1f) {
 				// player.onDeath(DamageSource.generic);
 				if (r.nextInt(100) == 0) {
-					player.addChatMessage(new ChatComponentText(
-							"You bring great honor to your famiry!"));
+					player.addChatMessage(new ChatComponentText("You bring great honor to your famiry!"));
 				} else {
-					player.addChatMessage(new ChatComponentText(
-							"You bring great honor to your family!"));
+					player.addChatMessage(new ChatComponentText("You bring great honor to your family!"));
 				}
 			} else {
 				if (r.nextInt(100) == 0) {
-					player.addChatMessage(new ChatComponentText(
-							"You bring great confusion to your famiry!"));
+					player.addChatMessage(new ChatComponentText("You bring great confusion to your famiry!"));
 				} else {
-					player.addChatMessage(new ChatComponentText(
-							"You bring great confusion to your family!"));
+					player.addChatMessage(new ChatComponentText("You bring great confusion to your family!"));
 				}
 			}
 
@@ -148,16 +139,12 @@ public class SwordSacrifice extends SMItem {
 
 	@SideOnly(Side.CLIENT)
 	public void registerIcons(IIconRegister register) {
-		this.spirit = new IIcon[6];
-		this.sword = register.registerIcon(SpirituMixta.MODID + ":"
-				+ getUnlocalizedName().substring(5) + "/swordSacrifice");
-		this.activated = register.registerIcon(SpirituMixta.MODID + ":"
-				+ getUnlocalizedName().substring(5) + "/activated");
-		this.full = register.registerIcon(SpirituMixta.MODID + ":"
-				+ getUnlocalizedName().substring(5) + "/full");
-		for (int i = 0; i < 6; i++) {
-			this.spirit[i] = register.registerIcon(SpirituMixta.MODID + ":"
-					+ getUnlocalizedName().substring(5) + "/spirit" + i);
+		this.spirit = new IIcon[24];
+		this.sword = register.registerIcon(SpirituMixta.MODID + ":" + getUnlocalizedName().substring(5) + "/swordSacrifice");
+		this.activated = register.registerIcon(SpirituMixta.MODID + ":" + getUnlocalizedName().substring(5) + "/activated");
+		this.full = register.registerIcon(SpirituMixta.MODID + ":" + getUnlocalizedName().substring(5) + "/full");
+		for (int i = 0; i < 24; i++) {
+			this.spirit[i] = register.registerIcon(SpirituMixta.MODID + ":" + getUnlocalizedName().substring(5) + "/spirit" + i);
 		}
 	}
 
@@ -166,20 +153,16 @@ public class SwordSacrifice extends SMItem {
 
 		if (stack.stackTagCompound == null)
 			stack.stackTagCompound = new NBTTagCompound();
-		float index = Math.max(4 * stack.stackTagCompound.getInteger("power")
-				/ MAX_POWER[stack.stackTagCompound.getInteger("tier")], 5);
+		float index = Math.min(23 * stack.stackTagCompound.getInteger("power") / MAX_POWER[stack.stackTagCompound.getInteger("tier")],23);
 		if (pass == 0)
 			return sword;
 		else if (pass == 1)
-			return stack.stackTagCompound.getBoolean("activated") ? activated
-					: spirit[0];
-		else if (pass == 2)
-			return stack.stackTagCompound.getInteger("power") >= MAX_POWER[stack.stackTagCompound
-					.getInteger("tier")] ? full : spirit[0];
-		else if (pass == 3)
 			return spirit[(int) index];
+		else if (pass == 2)
+			return stack.stackTagCompound.getBoolean("activated") ? activated : spirit[0];
+		else if (pass == 3)
+			return stack.stackTagCompound.getInteger("power") >= MAX_POWER[stack.stackTagCompound.getInteger("tier")] ? full : spirit[0];
 		else
 			return spirit[0];
-
 	}
 }

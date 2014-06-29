@@ -1,0 +1,16 @@
+Black:Dragon
+Blue:Cave Spider
+Brown:Villager
+Cyan:Squid
+Green:Creeper
+Grey:Skeleton
+LightBlue:
+Lime:Slime
+Magenta:
+Orange:Blaze
+Pink:Pig
+Purple:Enderman
+Red:Spider
+Silver:Player
+White:Wither
+Yellow:Chicken
