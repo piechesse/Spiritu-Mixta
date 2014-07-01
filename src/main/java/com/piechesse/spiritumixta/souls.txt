@@ -1,12 +1,12 @@
 Black:Dragon
-Blue:Cave Spider
+Blue:Ghast
 Brown:Villager
 Cyan:Squid
 Green:Creeper
 Grey:Skeleton
-LightBlue:
+LightBlue:Bat
 Lime:Slime
-Magenta:
+Magenta:Iron Golem
 Orange:Blaze
 Pink:Pig
 Purple:Enderman

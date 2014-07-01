@@ -2,11 +2,6 @@ package com.piechesse.spiritumixta.item;
 
 import java.util.List;
 
-import com.piechesse.spiritumixta.SpirituMixta;
-
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
@@ -14,10 +9,16 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
 import net.minecraft.util.MathHelper;
 
+import com.piechesse.spiritumixta.Reference;
+import com.piechesse.spiritumixta.SpirituMixta;
+
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
+
 public class ItemSpiritFractured extends SMItem {
-	public static final String[] names = new String[] { "Black", "Red",
-			"Green", "Brown", "Blue", "Purple", "Cyan", "Silver", "Grey",
-			"Pink", "Lime", "Yellow", "LightBlue", "Magenta", "Orange", "White" };
+	public static final String[] names = new String[] { "Black", "Blue",
+			"Brown", "Cyan", "Green", "Grey", "LightBlue", "Lime", "Magenta",
+			"Orange", "Pink", "Purple", "Red", "Silver", "White", "Yellow" };
 	@SideOnly(Side.CLIENT)
 	private IIcon[] icons;
 
@@ -51,7 +52,7 @@ public class ItemSpiritFractured extends SMItem {
 		this.icons = new IIcon[names.length];
 
 		for (int i = 0; i < names.length; ++i) {
-			this.icons[i] = register.registerIcon(SpirituMixta.MODID + ":"
+			this.icons[i] = register.registerIcon(Reference.MODID + ":"
 					+ getUnlocalizedName().substring(5) + "/spirit" + names[i]);
 		}
 	}
