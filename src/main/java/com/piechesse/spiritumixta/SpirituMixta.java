@@ -6,6 +6,7 @@ import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 
+import com.piechesse.spiritumixta.block.ModBlocks;
 import com.piechesse.spiritumixta.handler.ConfigurationHandler;
 import com.piechesse.spiritumixta.item.ModItems;
 import com.piechesse.spiritumixta.proxy.IProxy;
@@ -13,7 +14,6 @@ import com.piechesse.spiritumixta.proxy.IProxy;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
 import cpw.mods.fml.common.Mod.Instance;
-import cpw.mods.fml.common.SidedProxy;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
@@ -37,13 +37,14 @@ public class SpirituMixta {
 
 	@Instance("spiritumixta")
 	public static SpirituMixta spirituMixta;
-	
-	//@SidedProxy(clientSide = Reference.CLIENT, serverSide = Reference.SERVER)
+
+	// @SidedProxy(clientSide = Reference.CLIENT, serverSide = Reference.SERVER)
 	public static IProxy proxy;
 
 	@EventHandler
 	public void preInitialization(FMLPreInitializationEvent event) {
 		ModItems.init();
+		ModBlocks.init();
 		ConfigurationHandler.init(event.getSuggestedConfigurationFile());
 	}
 
@@ -52,6 +53,11 @@ public class SpirituMixta {
 		GameRegistry.addRecipe(new ItemStack(ModItems.swordSacrifice), "  g",
 				"ig ", "si ", 'g', Blocks.glass, 'i', Items.iron_ingot, 's',
 				Items.stick);
+		GameRegistry.addShapelessRecipe(new ItemStack(ModBlocks.spiritStone),
+				ModItems.fracturedSpirit, Blocks.stone);
+		GameRegistry.addRecipe(new ItemStack(ModBlocks.secularFabricator),
+				"RRR", "RSR", "RRR", 'R', ModBlocks.spiritStone, 'S',
+				ModItems.fracturedSpirit);
 	}
 
 	@EventHandler
